@@ -35,6 +35,7 @@ entradaDados.question('Valor: \n', function (numero1) {
             } else {
                 // toUpperCase - converte uma string em MAIUSCULO
                 // toUpperCase - converte uma string em minusculo
+                
                 if (operacao == 'SOMAR') {
                     resultado = Number(valor1) + Number(valor2);
 
