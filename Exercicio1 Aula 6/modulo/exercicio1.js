@@ -1,6 +1,6 @@
 const calculoMedia = function (valor1, valor2, valor3, valor4) {
 
-    media = (parseFloat(valor1) + parseFloat(valor2) + parseFloat(valor3) + parseFloat(valor4)) / 4;
+    media = (Number(valor1) + Number(valor2) + Number(valor3) + Number(valor4)) / 4;
 
     //Validação para entrada vazia 
     if (valor1 == '' || valor2 == '' || valor3 == '' || valor4 == '') {
@@ -22,31 +22,65 @@ const calculoMedia = function (valor1, valor2, valor3, valor4) {
     } else {
         console.log('Sua média foi:', media.toFixed(1));
         if (media < 50) {
-            console.log('Status do Aluno: Reprovado')
+            return media
         } else if (media >= 50 && media <= 69) {
             exame()
-            console.log('Exame');
-            
+            return media
         } else if (media >= 70) {
-            console.log('Status do Aluno: Aprovado')
+            return media
         }
     }
 }
 
 const exame = function (calculoMedia, notaExame) {
-    
-    let exame = (calculoMedia + notaExame) / 2
 
-    if (exame >= 60) {
-        console.log('Com a nota do exame - APROVADO');
-    } else if (exame <= 59){
-        console.log('Com a nota do exame - REPROVADO');
+    let exame = (parseFloat(calculoMedia) + parseFloat(notaExame)) / 2;
+    
+        if (exame >= 60) {
+            //console.log('Com a nota do exame - APROVADO');
+            return exame
+        } else if (exame <= 59) {
+            //console.log('Com a nota do exame - REPROVADO');
+            return exame
+        }
     }
 
+
+const sexoAluno = function (sexoAl) {
+    let generoAl = sexoAl;
+
+    switch (generoAl) {
+        case 'MASCULINO':
+            generoAl = 'O aluno'
+            break;
+
+        case 'FEMININO':
+            generoAl = 'A aluna'
+            break;
+    }
+    return generoAl;
 }
-//
-exame(100,20)
+
+const sexoProfessor = function (sexoProf) {
+    let generoProfessor = sexoProf;
+
+    switch (generoProfessor) {
+        case 'MASCULINO':
+            generoProfessor = 'Professor'
+            break;
+
+        case 'FEMININO':
+            generoProfessor = 'Professora'
+            break;
+    }
+    return generoProfessor;
+}
+
 module.exports = {
     calculoMedia,
-    exame
+    exame,
+    sexoAluno,
+    sexoProfessor
+
 }
+
