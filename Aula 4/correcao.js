@@ -39,10 +39,14 @@ entradaDados.question('Valor: \n', function (numero1) {
                 // toUpperCase - converte uma string em MAIUSCULO
                 // toUpperCase - converte uma string em minusculo
 
-                resultado = matematica.calculadora(valor1, valor2, operacao) != false
-                if (resultado != false) {
-                    console.log(resultado);
+                //Chma a função para calcular os valores (função que criamos)
+                resultado = matematica.calculadora(valor1, valor2, operacao)
+                
+                if(resultado === false) { 
+                    entradaDados.close();
+
                 } else {
+                    console.log(resultado);
                     entradaDados.close();
                 }
             }
