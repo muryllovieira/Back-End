@@ -17,10 +17,19 @@ const calculoTabuada = function (numeroInicial, numeroFinal, contadorInicial, co
         console.log('ERRO: O valor até onde será calculada a tabuada deverá ser entre 1 e 50');
     }
     else {
-        for (let cont = tabuadaInicial; cont <+ tabuadaFInal; cont++) {
-            console.log('\nTabuada do:' + cont);
+        for (let cont = tabuadaInicial; cont <= tabuadaFInal; cont++) {
+            console.log('\nTabuada do ' + cont);
             
-            
+            for (let contador = contInicial; contador <= contFinal; contador++) {
+                resultado = contador * cont
+                console.log(`${cont} X ${contador} = ${resultado}`);
+                
+            }
         }
     }
+    return status;
+}
+
+module.exports = {
+    calculoTabuada
 }
