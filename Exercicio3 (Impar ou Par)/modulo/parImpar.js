@@ -8,22 +8,25 @@ function parImpar(numeroInicio, numeroFinal, escolhaUsuario) {
     let quantidadeTotal = 0;
 
     if (escolha == 1) {
+        console.log('\nLista de números pares')
         for (contador = numeroInicial; contador <= numeroFim; contador++) {
             if (contador % 2 == 0) {
-                console.log('Lista de números pares \n' + contador);
+                console.log(contador);
                 quantidadePar++;
             }
         }
         console.log('Quantidade de números pares: ' + quantidadePar);
     } else if (escolha == 2) {
+        console.log('\nLista de números impares')
         for (contador = numeroInicial; contador <= numeroFim; contador++) {
             if (contador % 2 == 1) {
-                console.log('Lista de números Impares \n' + contador);
+                console.log(contador);
                 quantidadeImpar++;
             }
         }
         console.log('Quantidade de números impares: ' + quantidadeImpar);
     } else if (escolha == 3) {
+        console.log('\nLista de números pares e impares')
         for (contador = numeroInicial; contador <= numeroFim; contador++) {
             if (contador % 2 == 0) {
                 console.log('Par: ' + contador);
@@ -33,9 +36,10 @@ function parImpar(numeroInicio, numeroFinal, escolhaUsuario) {
                 quantidadeTotal++;
             }
         }
-        console.log(quantidadeTotal);
+        console.log('Quantidade total de números pares e impares: ' + quantidadeTotal);
     }
 }
 
-
-parImpar(1, 15, 3);
+module.exports = {
+    parImpar
+}
