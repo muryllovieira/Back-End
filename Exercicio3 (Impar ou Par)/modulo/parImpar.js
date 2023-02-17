@@ -43,13 +43,14 @@ function parImpar(numeroInicio, numeroFinal, escolhaUsuario) {
             for (contador = Number(numeroInicial); contador <= Number(numeroFim); contador++) {
                 if (contador % 2 == 0) {
                     console.log('Par: ' + contador);
-                    quantidadeTotal++;
+                    quantidadePar++;
                 } else if (contador % 2 == 1) {
                     console.log('Impar: ' + contador);
-                    quantidadeTotal++;
+                    quantidadeImpar++;
                 }
             }
-            console.log('Quantidade total de números pares e impares: ' + quantidadeTotal);
+            console.log('Quantidade total de números pares: ' + quantidadePar);
+            console.log('Quantidade total de números impares: ' + quantidadeImpar);
         }
     }
 }
