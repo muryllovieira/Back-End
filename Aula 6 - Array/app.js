@@ -239,7 +239,7 @@ const listagemProdutos = function () {
     let listCoresLgArray = ['Preto', 'Cinza'];
     let listCoresTecladoArray = ['Preto', 'Branco', 'Cinza', 'Rosa', 'Azul'];
     let listCoresMouseArray = ['Preto', 'Branco', 'Azul', 'Verde', 'Rosa', 'Amarelo', 'Vermelho', 'Roxo'];
-    
+
     // Arrays para modelo
     let listModelosMonitor = ['LCD', 'LED', 'OLED', '4k', 'IPS']
     let listModelosTeclado = ['Mecanico', 'Semi-Mecanico', 'Membrana', 'Optico']
@@ -288,19 +288,47 @@ const listagemProdutos = function () {
     // console.log('Cor: ' + listProdutosJSON.produtos[1].cores[1]);
     // console.log('Modelo: ' + listProdutosJSON.produtos[1].modelos[1]);
 
-    for (let cont in listProdutosJSON.produtos) {
-        console.log('Nome do Produto: ' + listProdutosJSON.produtos[cont].nome);
-        console.log('Marca: ' + listProdutosJSON.produtos[cont].marca);
-        console.log('Valor: ' + listProdutosJSON.produtos[cont].valor);
-        
-        for (let i in listProdutosJSON.produtos[cont].cores){
-            console.log('Cores: ' + listProdutosJSON.produtos[i].cores);
-            break;
+    //Percorre o array de produtos para listar os itens
+    listProdutosJSON.produtos.forEach(function (itemProduto) {
+        console.log('Nome: ' + itemProduto.nome);
+        console.log('Marca: ' + itemProduto.marca);
+        console.log('Valor: ' + itemProduto.valor);
+
+        //Percorre o array de cores que está dentro do array de produtos(item)
+        if (typeof (itemProduto.cores) != 'undefined') {
+            itemProduto.cores.forEach(function (itemCor) {
+                console.log('Cor: ' + itemCor);
+            })
         }
-        
+
+        if (typeof (itemProduto.modelos) != 'undefined') {
+            itemProduto.modelos.forEach(function (itemModelo) {
+                console.log('Modelo: ' + itemModelo);
+            })
+        }
 
         console.log('-------------------------');
-    }
+    });
+
+
+
+
+    // for (let cont in listProdutosJSON.produtos) {
+    //     console.log('Nome do Produto: ' + listProdutosJSON.produtos[cont].nome);
+    //     console.log('Marca: ' + listProdutosJSON.produtos[cont].marca);
+    //     console.log('Valor: ' + listProdutosJSON.produtos[cont].valor);
+
+    //     for (let i in listProdutosJSON.produtos[cont].cores){
+    //         console.log('Cores: ' + listProdutosJSON.produtos[cont].cores[i]);
+
+    //     }
+
+    //     for (let contModelo in listProdutosJSON.produtos[cont].modelos){
+    //         console.log('Modelos: ' + listProdutosJSON.produtos[cont].modelos[contModelo]);
+    //     }
+
+    //     console.log('-------------------------');
+    // }
     //nome,marca,valor,cores,modelos
 
 };
