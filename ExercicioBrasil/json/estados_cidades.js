@@ -22499,10 +22499,11 @@ const getListaDeEstados = function(){
    let ufListaJSON = {}
    let ufListaArray = []
 
-   ufListaJSON = ufListaArray
+   ufListaJSON.uf = ufListaArray
 
    estadosCidades.estados.forEach(function(uf){
       ufListaArray.push(uf.sigla)
+      ufListaJSON.quantidade = ufListaArray.length
    })
    return ufListaJSON
 }
