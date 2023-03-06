@@ -22614,6 +22614,8 @@ const getCidades = function (sigla) {
          estado.cidades.forEach(function (cidade){
             arrayCidades.push(cidade.nome)
          })
+      } else {
+         return false
       }
    })
 
