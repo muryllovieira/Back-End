@@ -22621,4 +22621,4 @@ const getCidades = function (sigla) {
    return jsonRegiao
 }
 
-console.log(getEstadosRegiao('Norte'));
+console.log(getCidades('SP'));
