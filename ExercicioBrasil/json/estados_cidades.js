@@ -22511,7 +22511,6 @@ const getListaDeEstados = function () {
    return ufListaJSON
 }
 
-
 const getDadosEstado = function (sigla) {
 
    let ufListaJSON = {}
@@ -22572,7 +22571,6 @@ const getEstadosRegiao = function (regiao) {
       jsonListaRegiao.regiao = regiao
       jsonListaRegiao.estados = ufListaArray
    })
-   return jsonListaRegiao
 }
 
 const getCapitalPais = function () {
@@ -22605,13 +22603,13 @@ const getCidades = function (sigla) {
    let ufRegiao = sigla
 
    estadosCidades.estados.forEach(function (estado) {
-      if(ufRegiao == estado.sigla){
+      if (ufRegiao == estado.sigla) {
 
          jsonRegiao.uf = estado.sigla
          jsonRegiao.descricao = estado.nome
          jsonRegiao.quantidade_cidades = estado.cidades.length
 
-         estado.cidades.forEach(function (cidade){
+         estado.cidades.forEach(function (cidade) {
             arrayCidades.push(cidade.nome)
          })
       } else {
@@ -22623,4 +22621,4 @@ const getCidades = function (sigla) {
    return jsonRegiao
 }
 
-console.log(getCidades('SP'));
+console.log(getEstadosRegiao('suldeste'));
