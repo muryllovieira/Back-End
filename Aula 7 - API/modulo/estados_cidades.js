@@ -22517,6 +22517,8 @@ const getDadosEstado = function (sigla) {
 
    let uf = sigla
 
+   let status = false
+
    estadosCidades.estados.forEach(function (estado) {
 
       if (uf === estado.sigla) {
@@ -22524,12 +22526,18 @@ const getDadosEstado = function (sigla) {
          ufListaJSON.descricao = estado.nome
          ufListaJSON.capital = estado.capital
          ufListaJSON.regiao = estado.regiao
-      } else {
-         return false
-      }
 
+         status = true
+      }
    })
-   return ufListaJSON
+   if (status == true) {
+      return ufListaJSON
+   } else {
+      return false
+   }
+
+
+
 }
 
 const getCapitalEstado = function (sigla) {
@@ -22537,24 +22545,31 @@ const getCapitalEstado = function (sigla) {
 
    let uf = sigla
 
+   let status = false
+
    estadosCidades.estados.forEach(function (estado) {
 
       if (uf === estado.sigla) {
          ufListaJSON.uf = estado.sigla
          ufListaJSON.descricao = estado.nome
          ufListaJSON.capital = estado.capital
-      } else {
-         return false
-      }
 
+         status = true
+      }
    })
-   return ufListaJSON
+   if (status == true) {
+      return ufListaJSON
+   } else {
+      return false
+   }
 }
 
 const getEstadosRegiao = function (regiao) {
    let jsonListaRegiao = {}
    let ufListaArray = []
    let ufLista = regiao
+
+   let status = false
 
    estadosCidades.estados.forEach(function (estado) {
       if (ufLista === estado.regiao) {
@@ -22564,13 +22579,18 @@ const getEstadosRegiao = function (regiao) {
          ufListaJSON.descricao = estado.nome
 
          ufListaArray.push(ufListaJSON)
-      } else {
-         return false
-      }
 
+         status = true
+      } 
+   })
+   if (status == true) {
       jsonListaRegiao.regiao = regiao
       jsonListaRegiao.estados = ufListaArray
-   })
+
+      return jsonListaRegiao
+   } else {
+      return false
+   }
 }
 
 const getCapitalPais = function () {
