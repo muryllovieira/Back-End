@@ -22521,7 +22521,7 @@ const getDadosEstado = function (sigla) {
 
    estadosCidades.estados.forEach(function (estado) {
 
-      if (uf === estado.sigla) {
+      if (uf.toUpperCase()  === estado.sigla.toUpperCase() ) {
          ufListaJSON.uf = estado.sigla
          ufListaJSON.descricao = estado.nome
          ufListaJSON.capital = estado.capital
@@ -22549,7 +22549,7 @@ const getCapitalEstado = function (sigla) {
 
    estadosCidades.estados.forEach(function (estado) {
 
-      if (uf === estado.sigla) {
+      if (uf.toUpperCase() === estado.sigla.toUpperCase()) {
          ufListaJSON.uf = estado.sigla
          ufListaJSON.descricao = estado.nome
          ufListaJSON.capital = estado.capital
@@ -22572,7 +22572,7 @@ const getEstadosRegiao = function (regiao) {
    let status = false
 
    estadosCidades.estados.forEach(function (estado) {
-      if (ufLista === estado.regiao) {
+      if (ufLista.toUpperCase() === estado.regiao.toUpperCase()) {
 
          let ufListaJSON = {}
          ufListaJSON.uf = estado.sigla
@@ -22581,7 +22581,7 @@ const getEstadosRegiao = function (regiao) {
          ufListaArray.push(ufListaJSON)
 
          status = true
-      } 
+      }
    })
    if (status == true) {
       jsonListaRegiao.regiao = regiao
@@ -22614,13 +22614,14 @@ const getCapitalPais = function () {
       }
       jsonCapitais.capital = arrayCapitais
    })
-   return jsonCapitais
+      return jsonCapitais
 }
 
 const getCidades = function (sigla) {
    let jsonRegiao = {}
    let arrayCidades = []
-   let ufRegiao = sigla
+   let ufRegiao = sigla.toUpperCase() 
+   let status = false
 
    estadosCidades.estados.forEach(function (estado) {
       if (ufRegiao == estado.sigla) {
@@ -22631,14 +22632,18 @@ const getCidades = function (sigla) {
 
          estado.cidades.forEach(function (cidade) {
             arrayCidades.push(cidade.nome)
+
+            status = true
          })
-      } else {
-         return false
       }
    })
+   if (status == true) {
+      jsonRegiao.cidades = arrayCidades
+      return jsonRegiao
+   } else {
+      return false
+   }
 
-   jsonRegiao.cidades = arrayCidades
-   return jsonRegiao
 }
 
 module.exports = {

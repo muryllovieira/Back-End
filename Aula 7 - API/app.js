@@ -49,8 +49,8 @@ app.use((request, response, next) => {
         //async - estabalece um status de aguarde, assim que eu processar te devolvo os dados
             //Obs: se não usar o async a requisição é perdida, pois o front acha que a API esta fora do ar
 
-        //EndPoint para listar todos os estados
-    app.get('/estados', cors(), async function (request, response, next) {
+    //EndPoint para listar todos os estados
+    app.get('/v1/senai/estados', cors(), async function (request, response, next) {
 
             //Chama a função que vai listar todos os estados
             let estados = estadosCidades.getListaDeEstados();
@@ -67,7 +67,7 @@ app.use((request, response, next) => {
     });
 
     //EndPoint para listar os dados do estado filtrando pela sigla do estado
-    app.get('/estado/:uf', cors(), async function(request, response, next) {
+    app.get('/v1/senai/estado/sigla/:uf', cors(), async function(request, response, next) {
 
         let statusCode;
         let dadosEstado = {};
@@ -95,7 +95,7 @@ app.use((request, response, next) => {
     });
 
     //EndPoint para retornar a capital de um estado
-    app.get('/estadocapital/:uf', cors(), async function(request, response, next) {
+    app.get('/v1/senai/estadocapital/capital/sigla/:uf', cors(), async function(request, response, next) {
         let statusCode
         let dadosEstado = {}
 
@@ -120,7 +120,7 @@ app.use((request, response, next) => {
         response.json(dadosEstado)
     });
     //EndPoint para listar os estados de uma região
-    app.get('/estadosregiao/:regiao', cors(), async function(request, response, next) {
+    app.get('/v1/senai/estadosregiao/nome/regiao/:regiao', cors(), async function(request, response, next) {
         let statusCode
         let estadosRegiao = {}
 
@@ -145,7 +145,7 @@ app.use((request, response, next) => {
         response.json(estadosRegiao)
     });
     //EndPoint para retornar as informações para mostrar a capital do Brasil
-    app.get('/capital', cors(), async function (request, response, next) {
+    app.get('/v1/senai/capital', cors(), async function (request, response, next) {
 
         //Chama a função que vai listar todos os estados
         let capitalPais = estadosCidades.getCapitalPais();
@@ -159,11 +159,45 @@ app.use((request, response, next) => {
         }
     });
     //EndPoint que retorna uma lista de cidades, filtrado pela sigla do estado
-    app.get('/cidades/:uf', cors(), async function(request, response, next) {
+    app.get('/v1/senai/cidades/estado/sigla/:uf', cors(), async function(request, response, next) {
         let statusCode
         let cidades = {}
 
         let siglaEstado = request.params.uf
+
+        if(siglaEstado == '' || siglaEstado == undefined || !isNaN(siglaEstado)){
+            statusCode = 400;
+            cidades.message = 'Não foi possivel processar, pois os dados de entrada (uf) que foi enviado não corrensponde ao que foi exigido. Confira o valor, pois não pode ser vazio, precisa ser caracteres e ter 2 dígitos.';
+        } else {
+            //Chama a função para retornar os dados do estado
+            let cidadesEstado = estadosCidades.getCidades(siglaEstado)
+
+            if(cidadesEstado){
+                statusCode = 200
+                cidades = cidadesEstado
+            } else {
+                statusCode = 404
+            }
+        }
+        //Retorna o codigo e o JSON
+        response.status(statusCode)
+        response.json(cidades)
+    });
+    app.get('/v2/senai/cidades', cors(), async function(request, response, next) {
+
+        /*
+         *      Existem 2 opções  para receber variáveis para filtro:
+         *          params - que permite receber a variável na estrutura da URL
+         *              criada no endPoint (geralmente utilizada para ID (PK))
+         * 
+         *          query - Também comnhecido como queryString que permite receber 
+         *              uma ou muitas variaveis para realizar filtros avançado
+         */
+
+        //Recebe uma variavel encaminhada via QueryString
+        let siglaEstado = request.query.uf
+        let statusCode
+        let cidades = {}
 
         if(siglaEstado == '' || siglaEstado == undefined || !isNaN(siglaEstado)){
             statusCode = 400;
