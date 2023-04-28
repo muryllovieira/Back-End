@@ -60,11 +60,14 @@ app.use((request, response, next) => {
         npx prisma migrate dev  ###Serve para realizar o sincronismo entre o prisma e o Banco de Dados
     */
 
+    //Define que os dados que irão chegar no body da requisição será no padrao JSON
+    const bodyParserJson = bodyParser.json();
+
+    //Import do arquivo da controller que irá solicitar a model os dados do BD
+    var controllerAluno = require('./controller/controller_aluno.js')
 
     //EndPoint: Retorna todos os dados de alunos
     app.get('/v1/lion-school/aluno', cors(), async function(request, response){
-        //Import do arquivo da controller que irá solicitar a model os dados do BD
-        let controllerAluno = require('./controller/controller_aluno.js')
 
         //Recebe os dados da controller do aluno
         let dadosAluno = await controllerAluno.getAlunos();
@@ -99,7 +102,7 @@ app.use((request, response, next) => {
     })
 
     //EndPoint: Retorna o aluno filtrando pelo nome
-    app.get('/v1/lion-school/aluno/:nome', cors(), async function(request, response){
+    app.get('/v1/lion-school/aluno/nome/:nome', cors(), async function(request, response){
 
         let nome = request.params.nome;
 
@@ -107,7 +110,8 @@ app.use((request, response, next) => {
         let controllerAluno = require('./controller/controller_aluno.js')
 
         //Recebe os dados da controller do aluno
-        let dadosAluno = await controllerAluno.getBuscarAlunoID(nome);
+        let dadosAluno = await controllerAluno.getBuscarAlunoNome(nome);
+
         if(dadosAluno){
             response.json(dadosAluno);
             response.status(200);
@@ -118,8 +122,15 @@ app.use((request, response, next) => {
     })
 
     //EndPoint: Insere um dado novo 
-    app.post('/v1/lion-school/aluno', cors(), async function(request, response){
+    app.post('/v1/lion-school/aluno', cors(), bodyParserJson, async function(request, response){
 
+        //Recebe os dados encaminhados na requisição
+        let dadosBody = request.body;
+
+        let resultDadosAluno = await controllerAluno.inserirAluno(dadosBody)
+
+        response.status(resultDadosAluno.status)
+        response.json(resultDadosAluno)
     })
 
     //EndPoint: Atualiza um aluno existente, filtrando pelo ID

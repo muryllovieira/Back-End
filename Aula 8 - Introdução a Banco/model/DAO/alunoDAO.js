@@ -6,14 +6,37 @@
  **************************************************************************************/
 
 //Import da biblioteca do prisma client
-let { PrismaClient } = require('@prisma/client');
+var { PrismaClient } = require('@prisma/client');
 
 //Instancia da classe PrismaClient
-let prisma = new PrismaClient();
+var prisma = new PrismaClient();
 
 //Inserir dados do aluno no Banco de dados
-const insertAluno = function () {
+const insertAluno = async function (dadosAluno) {
 
+    //ScriptSQL para inserir dados
+    let sql = `insert into tbl_aluno (
+                                nome,
+                                rg,
+                                cpf,
+                                data_nascimento,
+                                email 
+                            ) values (
+                                '${dadosAluno.nome}',
+                                '${dadosAluno.rg}',
+                                '${dadosAluno.cpf}',
+                                '${dadosAluno.data_nascimento}',
+                                '${dadosAluno.email}'
+                            )`
+    
+    //Executa o scriptSQL no banco de dados
+    let resultStatus = await prisma.$executeRawUnsafe(sql);
+
+    if(resultStatus){
+        return true
+    } else {
+        return false
+    }
 }
 
 //Atualizar um aluno existente 
@@ -52,7 +75,7 @@ const selectByIdAluno = async function (id) {
     //Script para buscar um aluno filtrando pelo ID
     let sql = `select * from tbl_aluno where id = ${idAluno}`;
 
-    console.log(sql);
+    //console.log(sql);
     let rsAluno = await prisma.$queryRawUnsafe(sql)
 
     //Valida de o Banco de Dados retornou algum registro
@@ -64,12 +87,12 @@ const selectByIdAluno = async function (id) {
 }
 
 //Retorna o aluno filtrando pelo ID
-const selectByNameAluno = async function (name) {
+const selectByNameAluno = async function (nome) {
 
-    let nameAluno = name
+    let nameAluno = nome
 
     //Script para buscar um aluno filtrando pelo ID
-    let sql = `select * from tbl_aluno where nome = ${nameAluno}`;
+    let sql = `select * from tbl_aluno where nome like '%${nameAluno}%'`;
 
     console.log(sql);
     let rsAluno = await prisma.$queryRawUnsafe(sql)
@@ -86,4 +109,5 @@ module.exports = {
     selectAllAlunos,
     selectByIdAluno,
     selectByNameAluno,
+    insertAluno,
 }
