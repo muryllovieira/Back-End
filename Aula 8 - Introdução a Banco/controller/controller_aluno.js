@@ -62,8 +62,29 @@
         }
     }
 
+    //Retorna o aluno filtrando pelo nome
+    const getBuscarAlunoNome = async function (nome) {
+
+        let nomeAluno = nome
+
+        let dadosAlunosJSON = {}
+
+        //Import do arquivo DAO para acessar dados do aluno no BD
+        let alunoDAO = require('../model/DAO/alunoDAO.js')
+
+        let dadosAluno = await alunoDAO.selectByNameAluno(nomeAluno)
+        
+        if (dadosAluno){
+            dadosAlunosJSON.aluno = dadosAluno
+            return dadosAlunosJSON
+        } else {
+            return false;
+        }
+    }
+
 module.exports = {
     getAlunos,
     getBuscarAlunoID,
+    getBuscarAlunoNome,
 }
 

@@ -63,7 +63,27 @@ const selectByIdAluno = async function (id) {
     }
 }
 
+//Retorna o aluno filtrando pelo ID
+const selectByNameAluno = async function (name) {
+
+    let nameAluno = name
+
+    //Script para buscar um aluno filtrando pelo ID
+    let sql = `select * from tbl_aluno where nome = ${nameAluno}`;
+
+    console.log(sql);
+    let rsAluno = await prisma.$queryRawUnsafe(sql)
+
+    //Valida de o Banco de Dados retornou algum registro
+    if (rsAluno.length > 0) {
+        return rsAluno
+    } else {
+        return false;
+    }
+}
+
 module.exports = {
     selectAllAlunos,
     selectByIdAluno,
+    selectByNameAluno,
 }

@@ -98,6 +98,25 @@ app.use((request, response, next) => {
         }
     })
 
+    //EndPoint: Retorna o aluno filtrando pelo nome
+    app.get('/v1/lion-school/aluno/:nome', cors(), async function(request, response){
+
+        let nome = request.params.nome;
+
+        //Import do arquivo da controller que irá solicitar a model os dados do BD
+        let controllerAluno = require('./controller/controller_aluno.js')
+
+        //Recebe os dados da controller do aluno
+        let dadosAluno = await controllerAluno.getBuscarAlunoID(nome);
+        if(dadosAluno){
+            response.json(dadosAluno);
+            response.status(200);
+        } else {
+            response.json();
+            response.status(404);
+        }
+    })
+
     //EndPoint: Insere um dado novo 
     app.post('/v1/lion-school/aluno', cors(), async function(request, response){
 
