@@ -22,7 +22,6 @@ var alunoDAO = require('../model/DAO/alunoDAO.js')
             dadosAluno.data_nascimento == '' || dadosAluno.data_nascimento == undefined || dadosAluno.data_nascimento.length > 10 ||
             dadosAluno.email == ''           || dadosAluno.email == undefined           || dadosAluno.email.length > 255
         ){
-            console.log(resultDadosAluno.nome);
             return message.ERROR_REQUIRED_FIELDS
         } else {
 
@@ -40,13 +39,43 @@ var alunoDAO = require('../model/DAO/alunoDAO.js')
     }
 
     //Atualizar um aluno existente 
-    const atualizarAluno = function (dadosAluno) {
+    const atualizarAluno = async function (dadosAluno, idAluno) {
+
+        if(dadosAluno.nome == ''             || dadosAluno.nome == undefined            || dadosAluno.nome.length > 100 ||
+            dadosAluno.rg == ''              || dadosAluno.rg == undefined              || dadosAluno.rg.length > 15 ||
+            dadosAluno.cpf == ''             || dadosAluno.cpf == undefined             || dadosAluno.cpf.length > 18 ||
+            dadosAluno.data_nascimento == '' || dadosAluno.data_nascimento == undefined || dadosAluno.data_nascimento.length > 10 ||
+            dadosAluno.email == ''           || dadosAluno.email == undefined           || dadosAluno.email.length > 255
+        ){
+            return message.ERROR_REQUIRED_FIELDS
+        //Validaçaõ do ID incorreto ou não informado
+        } else if(idAluno == '' || idAluno == undefined || isNaN(idAluno)) {
+            return message.ERROR_INVALID_ID
+        } else {
+            //Adiciona o ID do aluno no JSON dos dados
+            dadosAluno.id = idAluno
+
+            let resultDadosAluno = await alunoDAO.updateAluno(dadosAluno);
+
+            if (resultDadosAluno) {
+                return message.SUCCESS_UPDATING_ITEM
+            } else {
+                return message.ERROR_INTERNAL_SERVER
+            }
+        }
 
     }
 
     //Excluir um aluno existente
-    const deletarAluno = function (id) {
+    const deletarAluno = async function (id) {
 
+        let dadosAluno = await alunoDAO.deleteAluno(id);
+
+        if (dadosAluno){
+            return message.SUCCESS_DELETE_ITEM
+        } else {
+            return message.ERROR_INVALID_ID
+        }
     }
 
     //Retorna a lista de todos os alunos
@@ -110,5 +139,7 @@ module.exports = {
     getBuscarAlunoID,
     getBuscarAlunoNome,
     inserirAluno,
+    atualizarAluno,
+    deletarAluno
 }
 

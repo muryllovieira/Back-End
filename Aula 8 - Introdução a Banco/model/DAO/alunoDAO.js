@@ -27,7 +27,7 @@ const insertAluno = async function (dadosAluno) {
                                 '${dadosAluno.cpf}',
                                 '${dadosAluno.data_nascimento}',
                                 '${dadosAluno.email}'
-                            )`
+                            )`;
     
     //Executa o scriptSQL no banco de dados
     let resultStatus = await prisma.$executeRawUnsafe(sql);
@@ -40,13 +40,40 @@ const insertAluno = async function (dadosAluno) {
 }
 
 //Atualizar um aluno existente 
-const updateAluno = function (dadosAluno) {
+const updateAluno = async function (dadosAluno) {
+ 
+    let sql = `update tbl_aluno set 
+                        nome = '${dadosAluno.nome}',
+                        rg = '${dadosAluno.rg}',
+                        cpf = '${dadosAluno.cpf}',
+                        data_nascimento = '${dadosAluno.data_nascimento}',
+                        email = '${dadosAluno.email}'
+                where id = ${dadosAluno.id}`;
 
+    //Executa o scriptSQL no banco de dados
+    let resultStatus = await prisma.$executeRawUnsafe(sql);
+
+    if(resultStatus){
+        return true
+    } else {
+        return false
+    }
 }
 
 //Excluir um aluno existente
-const deleteAluno = function (id) {
+const deleteAluno = async function (id) {
 
+    let idAluno = id;
+
+    let sql = `delete from tbl_aluno where id = ${idAluno};`
+
+    let resultStatus = await prisma.$executeRawUnsafe(sql)
+
+    if (resultStatus){
+        return true
+    } else {
+        return false
+    }
 }
 
 //Retorna a lista de todos os alunos
@@ -94,7 +121,6 @@ const selectByNameAluno = async function (nome) {
     //Script para buscar um aluno filtrando pelo ID
     let sql = `select * from tbl_aluno where nome like '%${nameAluno}%'`;
 
-    console.log(sql);
     let rsAluno = await prisma.$queryRawUnsafe(sql)
 
     //Valida de o Banco de Dados retornou algum registro
@@ -110,4 +136,6 @@ module.exports = {
     selectByIdAluno,
     selectByNameAluno,
     insertAluno,
+    updateAluno,
+    deleteAluno
 }
