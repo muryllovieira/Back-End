@@ -69,10 +69,22 @@ var alunoDAO = require('../model/DAO/alunoDAO.js')
     //Excluir um aluno existente
     const deletarAluno = async function (id) {
 
-        let dadosAluno = await alunoDAO.deleteAluno(id);
+        let buscarAlunoID = await getBuscarAlunoID(id)
 
-        if (dadosAluno){
-            return message.SUCCESS_DELETE_ITEM
+        if (buscarAlunoID) {
+            // Validação de IF incorreto ou não informado
+            if (id == '' || id == undefined || isNaN(idAluno)) {
+                return message.ERROR_INVALID_ID
+            } else {
+                // Encaminha os dados para a model do aluno
+                let resultDadosAluno = await alunoDAO.deleteAluno(id)
+
+                if (resultDadosAluno) {
+                    return message.SUCCESS_DELETE_ITEM
+                } else {
+                    return message.ERROR_INTERNAL_SERVER
+                }
+            }
         } else {
             return message.ERROR_INVALID_ID
         }

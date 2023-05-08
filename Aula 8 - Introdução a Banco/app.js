@@ -176,20 +176,17 @@ app.use((request, response, next) => {
     //EndPoint: Exclui um aluno, filtrando pelo ID
     app.delete('/v1/lion-school/aluno/:id', cors(), async function(request, response){
 
-        let id = request.params.id;
+         // Recebe o ID do aluno pelo parametro
+        let idAluno = request.params.id
+        
+        // Encaminha os dados para a controller
+        let resultDadosAluno = await controllerAluno.deletarAluno(idAluno)
 
-        //Import do arquivo da controller que irá solicitar a model os dados do BD
-        let controllerAluno = require('./controller/controller_aluno.js')
-
-        //Recebe os dados da controller do aluno
-        let dadosAluno = await controllerAluno.deletarAluno(id);
-
-        if(dadosAluno){
-            response.json(dadosAluno);
-            response.status(200);
+        if (resultDadosAluno.length != 0) {
+            response.status(resultDadosAluno.status)
+            response.json(resultDadosAluno)
         } else {
-            response.json();
-            response.status(404);
+            message.ERROR_INVALID_ID
         }
 
     })
