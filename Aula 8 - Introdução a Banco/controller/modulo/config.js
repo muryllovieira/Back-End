@@ -14,12 +14,17 @@ const ERROR_INVALID_ID = {status: 400, message: 'O ID informado na requisição 
 
 const ERROR_INVALID_CONTENT_TYPE = {status: 415, message: 'O tipo de mídia (Content-type) da solicitação não é compatível com o servidor. Tipo aceito: [application/json]'} 
 
+const ERROR_NOT_FOUND = {status: 404, message: 'Nenhum item encontrado na requisição'}
+
 /************************************ MENSAGENS DE SUCESSO **********************************************************/
 const SUCCESS_CREATED_ITEM = {status: 201, message: 'Item criado com sucesso'}
 
 const SUCCESS_UPDATING_ITEM = {status: 200, message: 'Item atualizado com sucesso'}
 
 const SUCCESS_DELETE_ITEM = {status: 200, message: 'Item deletado com sucesso'}
+
+const SUCCESS_REQUEST = {status: 200, message: 'Requisição bem sucedida'}
+
 
 module.exports = {
     ERROR_REQUIRED_FIELDS,
@@ -29,5 +34,7 @@ module.exports = {
     SUCCESS_UPDATING_ITEM,
     ERROR_INVALID_CONTENT_TYPE,
     SUCCESS_DELETE_ITEM,
+    SUCCESS_REQUEST,
+    ERROR_NOT_FOUND,
 }
 

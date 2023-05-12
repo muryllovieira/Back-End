@@ -24,14 +24,19 @@ var alunoDAO = require('../model/DAO/alunoDAO.js')
         ){
             return message.ERROR_REQUIRED_FIELDS
         } else {
-
-            console.log(resultDadosAluno);
             //Envia os dados para a model inserir no Banco de Dados
             resultDadosAluno = await alunoDAO.insertAluno(dadosAluno);
 
             //Valida de o banco de dados inseriu corretamente os dados
             if (resultDadosAluno) {
-                return message.SUCCESS_CREATED_ITEM
+
+                //Chama a função que vai encontrar o ID gerado após o insert
+                let novoAluno = await alunoDAO.selectLastId();
+
+                let dadosAlunosJSON = {};
+                dadosAlunosJSON.status = message.SUCCESS_CREATED_ITEM.status;
+                dadosAlunosJSON.aluno = novoAluno;
+                return dadosAlunosJSON
             } else {
                 return message.ERROR_INTERNAL_SERVER
             }
@@ -55,13 +60,27 @@ var alunoDAO = require('../model/DAO/alunoDAO.js')
             //Adiciona o ID do aluno no JSON dos dados
             dadosAluno.id = idAluno
 
-            let resultDadosAluno = await alunoDAO.updateAluno(dadosAluno);
+            let statusID = await alunoDAO.selectByIdAluno(idAluno);
 
-            if (resultDadosAluno) {
-                return message.SUCCESS_UPDATING_ITEM
+            if (statusID) {
+                let resultDadosAluno = await alunoDAO.updateAluno(dadosAluno);
+
+                if (resultDadosAluno) {
+                    
+                    let dadosAlunosJSON = {};
+                    dadosAlunosJSON.status = message.SUCCESS_UPDATING_ITEM.status;
+                    dadosAlunosJSON.message = message.SUCCESS_UPDATING_ITEM.message;
+                    dadosAlunosJSON.aluno = dadosAluno;
+
+                    return dadosAlunosJSON
+                } else {
+                    return message.ERROR_INTERNAL_SERVER
+                }
             } else {
-                return message.ERROR_INTERNAL_SERVER
+                return message.ERROR_NOT_FOUND;
             }
+
+           
         }
 
     }
@@ -73,7 +92,7 @@ var alunoDAO = require('../model/DAO/alunoDAO.js')
 
         if (buscarAlunoID) {
             // Validação de IF incorreto ou não informado
-            if (id == '' || id == undefined || isNaN(idAluno)) {
+            if (id == '' || id == undefined || isNaN(id)) {
                 return message.ERROR_INVALID_ID
             } else {
                 // Encaminha os dados para a model do aluno
@@ -100,11 +119,13 @@ var alunoDAO = require('../model/DAO/alunoDAO.js')
 
         if (dadosAluno) {
             //Criando um JSON com o atributo aluno, para encaminhar um array de alunos
+            dadosAlunosJSON.status = message.SUCCESS_REQUEST.status;
+            dadosAlunosJSON.message = message.SUCCESS_REQUEST.message;
             dadosAlunosJSON.quantidade = dadosAluno.length;
             dadosAlunosJSON.alunos = dadosAluno
             return dadosAlunosJSON
         } else {
-            return false;
+            return message.ERROR_NOT_FOUND;
         }
 
     }
@@ -114,19 +135,26 @@ var alunoDAO = require('../model/DAO/alunoDAO.js')
 
         let idNumero = id
 
-        let dadosAlunosJSON = {}
-
-        //Import do arquivo DAO para acessar dados do aluno no BD
-        let alunoDAO = require('../model/DAO/alunoDAO.js')
-
-        let dadosAluno = await alunoDAO.selectByIdAluno(idNumero)
-        
-        if (dadosAluno){
-            dadosAlunosJSON.aluno = dadosAluno
-            return dadosAlunosJSON
+        //Validação do ID
+        if (idNumero == '' || id == undefined || isNaN(idNumero)) {
+            return message.ERROR_INVALID_ID
         } else {
-            return false;
+            let dadosAlunosJSON = {}
+
+            let dadosAluno = await alunoDAO.selectByIdAluno(idNumero)
+            
+            if (dadosAluno) {
+                //Criando um JSON com o atributo aluno, para encaminhar um array de alunos
+                dadosAlunosJSON.status = message.SUCCESS_REQUEST.status;
+                dadosAlunosJSON.message = message.SUCCESS_REQUEST.message;
+                dadosAlunosJSON.alunos = dadosAluno
+                return dadosAlunosJSON
+            } else {
+                return message.ERROR_NOT_FOUND;
+            }
         }
+
+        
     }
 
     //Retorna o aluno filtrando pelo nome

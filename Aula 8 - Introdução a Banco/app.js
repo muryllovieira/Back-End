@@ -43,12 +43,12 @@ app.use((request, response, next) => {
 
 //CRUD (Create, Read, Update e Delete)
 
-/************************************ 
+/*****************************************************************************************************************
 * Objetivo: API de controle de ALUNOS
 * Data: 14/04/2023
 * Autor: Muryllo
 * Versão: 1.0
-***********************************/
+******************************************************************************************************************/
 
     /*
     Instalação do PRISMA no projeto (biblioteca para conexão com Banco de Dados)
@@ -75,33 +75,20 @@ app.use((request, response, next) => {
         //Recebe os dados da controller do aluno
         let dadosAluno = await controllerAluno.getAlunos();
 
-        //Valida se existe registros de aluno
-        if(dadosAluno){
-            response.json(dadosAluno);
-            response.status(200);
-        } else {
-            response.json();
-            response.status(404);
-        }
+        response.status(dadosAluno.status);
+        response.json(dadosAluno);
     })
 
     //EndPoint: Retorna o aluno filtrando pelo ID
     app.get('/v1/lion-school/aluno/:id', cors(), async function(request, response){
 
-        let numeroID = request.params.id;
-
-        //Import do arquivo da controller que irá solicitar a model os dados do BD
-        let controllerAluno = require('./controller/controller_aluno.js')
+        let idAluno = request.params.id;
 
         //Recebe os dados da controller do aluno
-        let dadosAluno = await controllerAluno.getBuscarAlunoID(numeroID);
-        if(dadosAluno){
-            response.json(dadosAluno);
-            response.status(200);
-        } else {
-            response.json();
-            response.status(404);
-        }
+        let dadosAluno = await controllerAluno.getBuscarAlunoID(idAluno);
+        
+        response.status(dadosAluno.status);
+        response.json(dadosAluno)
     })
 
     //EndPoint: Retorna o aluno filtrando pelo nome

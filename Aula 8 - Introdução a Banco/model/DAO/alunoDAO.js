@@ -113,7 +113,7 @@ const selectByIdAluno = async function (id) {
     }
 }
 
-//Retorna o aluno filtrando pelo ID
+//Retorna o aluno filtrando pelo nome
 const selectByNameAluno = async function (nome) {
 
     let nameAluno = nome
@@ -131,11 +131,26 @@ const selectByNameAluno = async function (nome) {
     }
 }
 
+//Retorna o ultimo id inserido no BD
+const selectLastId = async function (){
+
+    let sql = 'select * from tbl_aluno order by id desc limit 1'
+
+    let rsAluno = await prisma.$queryRawUnsafe(sql);
+
+    if (rsAluno.length > 0){
+        return rsAluno;
+    } else {
+        return false;
+    }
+}
+
 module.exports = {
     selectAllAlunos,
     selectByIdAluno,
     selectByNameAluno,
     insertAluno,
     updateAluno,
-    deleteAluno
+    deleteAluno,
+    selectLastId
 }
